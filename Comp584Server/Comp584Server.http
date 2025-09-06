@@ -1,0 +1,6 @@
+@Comp584Server_HostAddress = http://localhost:5005
+
+GET {{Comp584Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
