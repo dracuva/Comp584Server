@@ -70,8 +70,8 @@ namespace Comp584Server.Controllers
                     City city = new()
                     {
                         Name = record.city,
-                        Latitude = record.lat,
-                        Longitude = record.lng,
+                        Latitude = (int)record.lat,
+                        Longitude = (int)record.lng,
                         Population = (int)record.population.Value,
                         CountryId = countries[record.country].Id
                     };
