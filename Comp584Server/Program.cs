@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WorldModel;
@@ -15,6 +16,12 @@ builder.Services.AddDbContext<Comp584Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentity<WorldModelUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+})
+    .AddEntityFrameworkStores<Comp584Context>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -37,6 +44,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()); // Configure CORS to allow any origin, method, and header
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
