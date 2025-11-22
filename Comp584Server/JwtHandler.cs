@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using WorldModel;
 
 namespace Comp584Server
@@ -12,8 +13,8 @@ namespace Comp584Server
         {
             return new JwtSecurityToken
                 (
-                issuer: configuration["JwtSettings:validIssuer"],
-                audience: configuration["JwtSettings:validAudience"],
+                issuer: configuration["JwtSettings:Issuer"],
+                audience: configuration["JwtSettings:Audience"],
                 claims: await GetClaimsAsync(user),
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(configuration["JwstSettings:ExpiriyMinutes"])),
                 signingCredentials: GetSigningCredentials()
@@ -21,7 +22,7 @@ namespace Comp584Server
         }
         private SigningCredentials GetSigningCredentials()
         {
-            byte[] key = Convert.FromBase64String(configuration["JwtSettings:SecretKey"]!);
+            byte[] key = Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]!);
             SymmetricSecurityKey signingKey = new (key);
             return new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
         }
